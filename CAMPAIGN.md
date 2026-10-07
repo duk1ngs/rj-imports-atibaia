@@ -11,3 +11,5 @@ Generate ONE cinematic wide 16:9 campaign still-life for RJ Imports, 2048x1152 h
 ## Validation
 
 Six renders at 1440, 1366, 768, 430, 390 and 360px; CTA/anchor, image decode, single H1, secondary hero after meaningful content, scroll response, static mobile, dynamic reduced motion, no idle RAF, no-JS. Existing menus, gallery and contextual WhatsApp checked; original Container/Zoom/Spotlight regression passed. Automatic 1.8-second intro without skip preserved. Local lab checks do not constitute field Core Web Vitals or real-device GPU validation.
+
+Encoded high source is 1672×941px (generation output), not the requested 2048×1152. The filename 1800 denotes an export cap; srcset and intrinsic dimensions match actual metadata. No enlargement.
