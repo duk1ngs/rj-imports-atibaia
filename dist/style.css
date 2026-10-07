@@ -17,3 +17,15 @@
 @media(max-width:800px){.stage-main{height:500px}}
 @media(max-width:650px){.stage-main{height:465px}.stage-main img{object-position:50% 65%}.stage-inset{width:150px}.motion-ready .reveal{transform:translateY(7px);transition-duration:.4s}.entry-ready .boutique-copy .lead{animation-delay:.04s}}
 @media(prefers-reduced-motion:reduce){.reveal,.entry-ready .boutique-copy h1,.entry-ready .boutique-copy .lead{opacity:1!important;transform:none!important;clip-path:none!important}}
+
+/* Container Scroll interpretation: rj-imports-atibaia. Existing effects retained. */
+
+.luxury-scene{perspective:1250px}.luxury-panel{position:relative;padding:18px;background:#231c1c;border:1px solid #a07964;transform-origin:center 65%;box-shadow:0 26px 55px #09040555}
+.luxury-panel:before{content:'';position:absolute;inset:6px;border:1px solid #f5e5cc25;pointer-events:none}.luxury-panel img{object-fit:contain;background:#302728}
+.gallery-side .gallery-controls{gap:12px}.gallery-side .lead{max-width:23ch}
+@media(max-width:650px){.luxury-panel{padding:10px;height:410px}.luxury-panel:before{inset:4px}.luxury-scene{perspective:1800px}}
+
+.polished-cta{position:relative;isolation:isolate;overflow:hidden}.polished-cta:before{content:'';position:absolute;inset:-40% -20%;background:linear-gradient(110deg,transparent 40%,#fff2 50%,transparent 60%);transform:translateX(-110%);pointer-events:none}
+@media(hover:hover) and (pointer:fine){.polished-cta:hover:before,.polished-cta:focus-visible:before{animation:cta-light-pass .65s ease-out}}
+@keyframes cta-light-pass{to{transform:translateX(110%)}}
+@media(prefers-reduced-motion:reduce){[data-container-panel]{transform:none!important}.polished-cta:before{display:none}}
