@@ -17,3 +17,8 @@ Native `dist/container-scroll.js`, no new runtime dependencies. One framed media
 ## Be Store inspired reformulation
 
 2026-10-07: atmospheric dark hero, rounded actions and contained photos; original store data and prior scoped effects retained. Automatic intro on each load, 1.8 seconds, no skip button; navigation inert only during intro, no-JS/reduced-motion immediately show content.
+
+## Campaign evolution
+New opening: Tecnologia que valoriza o seu mundo.. Existing hero retained as Uma escolha acompanhada, before <section class="section wrap gallery-section", with original effect hooks and photo. Real HTML copy; responsive WebP; CSS media mask after intro; bounded Owned Zoom with text and CTA outside transforms. Video reference: stable central object, restrained layered depth and continuity; no autoplay orbit/carousel copied.
+
+Campaign checkpoint validated: six viewport scenes and story screenshots; controls, reduced motion/no-JS, intro and retained component regression passed. See CAMPAIGN.md for asset provenance and prompt.
