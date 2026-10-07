@@ -1,20 +1,11 @@
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const intro = document.querySelector('.intro');
-let introPlaying = false;
 const enterPage = () => document.body.classList.add('entry-ready');
-if (intro && !reduced) {
-  let seen = false;
-  try { seen = sessionStorage.getItem('intro-seen') === '1'; sessionStorage.setItem('intro-seen', '1'); } catch {}
-  if (!seen) {
-    introPlaying = true;
-    intro.classList.add('active');
-    const close = () => { intro.classList.remove('active'); intro.hidden = true; introPlaying = false; enterPage(); };
-    intro.querySelector('button')?.addEventListener('click', close);
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
-    setTimeout(close, 1550);
-  }
-}
-if (!introPlaying) enterPage();
+if(intro && !reduced){
+  intro.classList.add('active');document.body.classList.add('intro-playing');
+  const locked=[...document.querySelectorAll('header,main,footer')];locked.forEach(el=>el.inert=true);
+  setTimeout(()=>{intro.classList.remove('active');intro.hidden=true;document.body.classList.remove('intro-playing');locked.forEach(el=>el.inert=false);enterPage();},1800);
+}else{if(intro)intro.hidden=true;enterPage();}
 const menu = document.querySelector('.menubutton');
 const links = document.querySelector('.navlinks');
 menu?.addEventListener('click', () => {

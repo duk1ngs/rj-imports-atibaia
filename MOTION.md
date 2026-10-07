@@ -13,3 +13,7 @@ Scroll Expansion Hero foi encontrado no registro anterior sem fonte física; nã
 ## Perspective Container Scroll — 2026-10-07
 
 Native `dist/container-scroll.js`, no new runtime dependencies. One framed media panel, controls outside; existing intro/reveal/Spotlight/Zoom remain. Validated desktop 1440/mobile390, no-JS, dynamic reduced motion, progression, teardown, offscreen suspension and no idle RAF. Strict checkJs used shared declaration. Local evidence: ../container-qa.json and qa/container-progress.png; CPU callbacks measured separately from GPU/CWV.
+
+## Be Store inspired reformulation
+
+2026-10-07: atmospheric dark hero, rounded actions and contained photos; original store data and prior scoped effects retained. Automatic intro on each load, 1.8 seconds, no skip button; navigation inert only during intro, no-JS/reduced-motion immediately show content.
