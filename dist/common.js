@@ -1,16 +1,20 @@
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const intro = document.querySelector('.intro');
+let introPlaying = false;
+const enterPage = () => document.body.classList.add('entry-ready');
 if (intro && !reduced) {
   let seen = false;
   try { seen = sessionStorage.getItem('intro-seen') === '1'; sessionStorage.setItem('intro-seen', '1'); } catch {}
   if (!seen) {
+    introPlaying = true;
     intro.classList.add('active');
-    const close = () => { intro.classList.remove('active'); intro.hidden = true; };
+    const close = () => { intro.classList.remove('active'); intro.hidden = true; introPlaying = false; enterPage(); };
     intro.querySelector('button')?.addEventListener('click', close);
     document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
     setTimeout(close, 1550);
   }
 }
+if (!introPlaying) enterPage();
 const menu = document.querySelector('.menubutton');
 const links = document.querySelector('.navlinks');
 menu?.addEventListener('click', () => {
