@@ -1,0 +1,11 @@
+# RJ Imports — cinematic validated checkpoint
+
+All rendered and functional gates PASS, 2026-10-07. Short real-brand intro without skip → coordinated silhouette/product entrance → independent environment/material/travel layers → store-specific content anchor. Reference iPhone 18 Pro Max geometry uses one master texture with protected optics and Dark Gray, Silver, Dark Cherry and Light Blue finishes. Place starts Silver; genuine scroll follows the same ordered four finishes. The page identifies the visual concept without asserting official launch, specifications or stock.
+
+Changed: dist/index.html, dist/common.js; added cinematic.js/.css and iphone-master.webp, cinematic-scene.webp, cinematic-scene-mobile.webp. One generated product master and four separate generated environments; prompts/provenance remain in ../cinematic-assets/provenance.json. Phone WebP 89,674 bytes, same hash across all sites. Existing real store photos, documentary hero, factual data, header/intro/favicon logos, navigation, gallery and original Container/Zoom/Spotlight retained. 011 gallery keeps only Nosso endereço; Castelo retains its actual gold C battlement mark.
+
+Validated: 1440×1000, 1366×768, 768×1024, 430×932, 390×844, 360×800, 320×780, 375×667. Intro continuity, four finishes, intermediate travel, exact reverse path, keyboard/manual latest selection, touch-sized controls, handoff CTA, reduced-motion live toggle, session intro, no-JS, missing texture keeps CTA, no idle RAF, cleanup/remount. Documentary tail byte-identical to baseline. Full-page interaction/media and original motion regression passed. Evidence: qa/cinematic-result.json, qa/cinematic-*.png, qa/cinematic-demo.webm and ../cinematic-integrity.json.
+
+Implementation is native layered 2.5D with small perspective transform; no runtime dependency added. Entry and scroll transforms have separate owners. Manual choice wins until normal-motion scroll; reduced-motion choice remains stable. Motion is event-driven and offscreen/hidden suspended. These are emulated browser checks, not physical-device/GPU/field-CWV or formal screen-reader claims.
+
+The source/GitHub/Sites release follows this validated checkpoint. Authoritative exact commits, saved versions and deployment verification live in ../cinematic-publication.json; final report ../CINEMATIC-REPORT.md.
