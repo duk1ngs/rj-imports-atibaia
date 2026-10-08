@@ -39,3 +39,10 @@ body.intro-playing header.wrap{opacity:0;pointer-events:none}body.entry-ready he
 @media(prefers-reduced-motion:reduce){.cinema-word{opacity:.14!important;transform:translate(-50%,-50%)!important}}
 @media(max-width:700px){.cinema-lead .actions{align-items:stretch}.cinematic .button{letter-spacing:0}}
 @media(max-width:360px){.cinematic .button{font-size:12px;padding-inline:8px}}
+
+/* Page-to-rail bridge belongs to desktop fine-pointer layouts only. */
+.cinematic.cinema-ready:not(.cinema-page-bridge){height:auto}.cinema-ready:not(.cinema-page-bridge) .cinema-stage{position:relative}
+.cinematic{--letter-glow:#76d5fc;--letter-halo:#76d5fc66}.cinematic[data-brand=place]{--letter-glow:#e4eaf4;--letter-halo:#dce5f066}.cinematic[data-brand=rj]{--letter-glow:#dfac77;--letter-halo:#dfac7766}.cinematic[data-brand=castelo]{--letter-glow:#e4be68;--letter-halo:#e4be6866}
+.cinema-word,.cinematic[data-brand] .cinema-word{text-transform:uppercase;color:#eaf4fc22;-webkit-text-stroke:1.1px var(--letter-glow);text-shadow:0 0 8px var(--letter-glow),0 0 26px var(--letter-halo);opacity:.38}.cinematic[data-brand=place] .cinema-word{font-size:7.8vw}
+@media(max-width:700px){.cinema-word,.cinematic[data-brand] .cinema-word{-webkit-text-stroke:.8px var(--letter-glow);text-shadow:0 0 6px var(--letter-glow),0 0 18px var(--letter-halo);opacity:.45}.cinematic[data-brand=place] .cinema-word{font-size:10.8vw}}
+@media(prefers-reduced-motion:reduce){.cinema-word{opacity:.38!important;transform:translate(-50%,-50%)!important}}
