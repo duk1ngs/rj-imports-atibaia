@@ -1,11 +1,8 @@
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const intro = document.querySelector('.intro');
-const mediaIntro = matchMedia('(prefers-reduced-motion: reduce)');
-const enterPage = () => { document.body.classList.add('entry-ready'); window.dispatchEvent(new Event('retail:entered')); };
+const intro=document.querySelector('.intro'),mediaIntro=matchMedia('(prefers-reduced-motion: reduce)');
 let introTimer;
-const closeIntro = () => { clearTimeout(introTimer); if(intro){intro.classList.remove('active');intro.hidden=true;} document.body.classList.remove('intro-playing'); enterPage(); mediaIntro.removeEventListener('change',closeIntro); };
-let seenIntro=false;try{seenIntro=sessionStorage.getItem('cinematic-intro-rj-imports-atibaia')==='1';sessionStorage.setItem('cinematic-intro-rj-imports-atibaia','1');}catch{}
-if(intro && !reduced && !seenIntro){intro.classList.add('active');document.body.classList.add('intro-playing');introTimer=setTimeout(closeIntro,1400);mediaIntro.addEventListener('change',closeIntro);}else closeIntro();
+const closeIntro=()=>{clearTimeout(introTimer);if(intro){intro.classList.remove('active');intro.hidden=true}document.body.classList.remove('intro-playing');document.body.classList.add('entry-ready');dispatchEvent(new Event('retail:entered'));mediaIntro.removeEventListener('change',closeIntro)};
+if(intro&&!reduced){intro.classList.add('active');document.body.classList.add('intro-playing');introTimer=setTimeout(closeIntro,2300);mediaIntro.addEventListener('change',closeIntro)}else closeIntro();
 const menu = document.querySelector('.menubutton');
 const links = document.querySelector('.navlinks');
 menu?.addEventListener('click', () => {

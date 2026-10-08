@@ -1,43 +1,37 @@
-/* One master texture, event-driven native material narrative. No scroll interception. */
+/* Finite reference timeline; product replacement is a discrete cut. */
 (()=>{'use strict';
- const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n));
- const ease=n=>{n=clamp(n);return n*n*(3-2*n)};
- function mount(root){
-  if(root.__cinematic)return root.__cinematic;
-  const mq=matchMedia('(prefers-reduced-motion: reduce)'),mobile=()=>innerWidth<=700;
-  const actor=root.querySelector('.phone-travel'),copy=root.querySelector('.cinema-copy'),handoff=root.querySelector('.cinema-handoff');
-  const layers=[...root.querySelectorAll('.finish-layer')],buttons=[...root.querySelectorAll('[data-finish-button]')],label=root.querySelector('[data-finish-label]');
-  const names=buttons.map(b=>b.textContent.trim()),colors=buttons.map(b=>(getComputedStyle(b.querySelector('i')).backgroundColor.match(/[\d.]+/g)||['128','128','128']).slice(0,3).map(Number)),maximum=layers.length-1;
-  const owned=[root,actor,copy,handoff,...layers].map(el=>({el,style:el.getAttribute('style'),inert:el.inert}));
-  const originalButtons=buttons.map(el=>({el,disabled:el.disabled,pressed:el.getAttribute('aria-pressed')}));
-  const originalLabel=label.textContent,originalData=['progress','finish','sceneState'].map(key=>[key,root.dataset[key]]);
-  let frame=0,top=0,range=1,lastY=scrollY,manual=null,active=-1,visible=true,destroyed=false;
-  root.classList.add('cinema-ready');buttons.forEach(b=>b.disabled=false);
-  const measure=()=>{top=root.getBoundingClientRect().top+scrollY;range=Math.max(1,root.offsetHeight-innerHeight)};
-  function paint(){frame=0;if(destroyed||document.hidden)return;
-   const p=mq.matches?0:clamp((scrollY-top)/range);root.dataset.progress=p.toFixed(4);
-   let v=manual??(p===0?clamp(Number(root.dataset.initialFinish)||0,0,maximum):clamp((p-.07)/.7)*maximum);
-   const lo=Math.floor(v),hi=Math.min(maximum,lo+1),mix=ease(v-lo);
-   layers.forEach((l,i)=>l.style.opacity=String(i===lo?1-mix:i===hi?mix:0));
-   const selected=Math.round(v);if(selected!==active){active=selected;label.textContent=names[selected];buttons.forEach((b,i)=>b.setAttribute('aria-pressed',String(i===selected)));root.dataset.finish=names[selected];}
-   root.style.setProperty('--material-light',`rgb(${colors[lo].map((n,i)=>Math.round(n+(colors[hi][i]-n)*mix)).join(' ')})`);root.style.setProperty('--set-shift',`${(-p*(mobile()?18:42)).toFixed(2)}px`);
-   const departure=ease((p-.81)/.17),copyDeparture=ease((p-.65)/.15),travel=ease(p);
-   actor.style.transform=mq.matches?'':`translate(${(mobile()?0:travel*68).toFixed(2)}px,${(travel*(mobile()?38:92)).toFixed(2)}px) rotate(${(-12+travel*15).toFixed(2)}deg) rotateY(${((mobile()?-2.5:-7)+travel*(mobile()?5:11)).toFixed(2)}deg) scale(${(1-travel*(mobile()?.16:.24)-(mobile()?departure*.20:0)).toFixed(4)})`;
-   copy.style.opacity=String(1-copyDeparture);copy.style.transform=mq.matches?'':`translateY(${-copyDeparture*32}px)`;copy.inert=copyDeparture>.9;
-   handoff.style.opacity=String(departure);handoff.style.transform=mq.matches?'':`translateY(${(1-departure)*32}px)`;handoff.inert=departure<.9;
-   root.dataset.sceneState=p>.9?'handoff':p>.07?'transform':'hero';
-  }
-  const schedule=()=>{if(!frame&&!destroyed)frame=requestAnimationFrame(paint)};
-  const scroll=()=>{if(Math.abs(scrollY-lastY)>.5){if(!mq.matches){manual=null;root.classList.remove('manual-finish')}lastY=scrollY}if(visible)schedule()};
-  const resize=()=>{measure();schedule()};
-  const preference=()=>{root.classList.toggle('cinema-reduced',mq.matches);measure();schedule()};
-  const select=e=>{const b=e.target.closest('[data-finish-button]');if(!b||!root.contains(b))return;lastY=scrollY;manual=Number(b.dataset.finishButton);root.classList.toggle('manual-finish',!mq.matches);schedule()};
-  const visibility=()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0}else resize()};
-  root.addEventListener('click',select);window.addEventListener('scroll',scroll,{passive:true});window.addEventListener('resize',resize,{passive:true});mq.addEventListener('change',preference);document.addEventListener('visibilitychange',visibility);
-  const observer='IntersectionObserver'in window?new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible)resize();else{cancelAnimationFrame(frame);frame=0}},{rootMargin:'50px'}):null;observer?.observe(root);
-  preference();paint();
-  const image=new Image();image.src=root.dataset.master;image.decode().then(()=>{if(!destroyed)root.classList.add('product-decoded')},()=>{if(!destroyed)root.classList.add('product-unavailable')});
-  const api={destroy(){if(destroyed)return;destroyed=true;cancelAnimationFrame(frame);observer?.disconnect();root.removeEventListener('click',select);window.removeEventListener('scroll',scroll);window.removeEventListener('resize',resize);mq.removeEventListener('change',preference);document.removeEventListener('visibilitychange',visibility);root.classList.remove('cinema-ready','cinema-reduced','manual-finish','product-decoded','product-unavailable');owned.forEach(({el,style,inert})=>{if(style===null)el.removeAttribute('style');else el.setAttribute('style',style);el.inert=inert;});originalButtons.forEach(({el,disabled,pressed})=>{el.disabled=disabled;if(pressed===null)el.removeAttribute('aria-pressed');else el.setAttribute('aria-pressed',pressed)});originalData.forEach(([key,value])=>{if(value===undefined)delete root.dataset[key];else root.dataset[key]=value});label.textContent=originalLabel;delete root.__cinematic;},refresh:resize};root.__cinematic=api;return api;
+const clamp=n=>Math.max(0,Math.min(1,n)),ease=n=>{n=clamp(n);return n*n*(3-2*n)},lerp=(a,b,t)=>a+(b-a)*t;
+function mount(root){
+ if(root.__cinematic)return root.__cinematic;
+ const actor=root.querySelector('.phone-travel'),copy=root.querySelector('.cinema-copy'),lead=root.querySelector('.cinema-lead'),handoff=root.querySelector('.cinema-handoff'),word=root.querySelector('.cinema-word');
+ const layers=[...root.querySelectorAll('.finish-layer')],buttons=[...root.querySelectorAll('[data-finish-button]')],label=root.querySelector('[data-finish-label]'),order=(root.dataset.finishOrder||'0,1,2,3').split(',').map(Number),names=buttons.map(b=>b.textContent.trim()),mq=matchMedia('(prefers-reduced-motion: reduce)');
+ const controls=root.querySelector('.cinema-controls'),owned=[root,actor,copy,lead,handoff,word,controls,...layers].map(el=>({el,style:el.getAttribute('style'),inert:el.inert,hidden:el.getAttribute('aria-hidden')}));
+ const originalLabel=label.textContent,originalButtons=buttons.map(el=>({el,disabled:el.disabled,pressed:el.getAttribute('aria-pressed')})),originalData=['progress','sceneState','entryProgress','finish','finishIndex'].map(k=>[k,root.dataset[k]]),originalDetails=[...root.querySelectorAll('[data-product-detail]')].map(el=>({el,src:el.getAttribute('src')}));
+ let frame=0,top=0,range=1,manual=null,lastY=scrollY,visible=true,destroyed=false,active=-1,start=0,entering=false,entered=false;
+ root.classList.add('cinema-ready');buttons.forEach(b=>b.disabled=false);
+ const measure=()=>{top=root.getBoundingClientRect().top+scrollY;range=Math.max(1,root.offsetHeight-innerHeight)},schedule=()=>{if(!frame&&!destroyed)frame=requestAnimationFrame(paint)};
+ function paint(now=performance.now()){
+  frame=0;if(destroyed||document.hidden)return;const mobile=innerWidth<=700,p=mq.matches?0:clamp((scrollY-top)/range);
+  if(p>.005){entering=false;entered=true;root.classList.add('timeline-complete')}
+  const t=mq.matches||!entering?1:clamp((now-start)/3400);
+  if(entering&&t>=1){entering=false;entered=true;root.classList.add('timeline-complete')}
+  const index=manual??order[Math.min(3,Math.floor(p/.215))];
+  if(index!==active){active=index;layers.forEach((el,i)=>{el.style.opacity=i===index?'1':'0';el.setAttribute('aria-hidden',String(i!==index))});buttons.forEach((b,i)=>b.setAttribute('aria-pressed',String(i===index)));label.textContent=names[index];root.dataset.finish=names[index];root.dataset.finishIndex=String(index);root.style.setProperty('--material-light',getComputedStyle(buttons[index].querySelector('i')).backgroundColor);root.querySelectorAll('[data-product-detail]').forEach(img=>img.src=layers[index].src)}
+  const exit=ease((p-.84)/.16),ui=mq.matches?1:(entering?ease((t-.58)/.42):entered?1:0);let x=0,y=0,r=mobile?14:45,s=1;
+  if(entering){if(t<.32){const a=ease(t/.32);y=lerp(-115,0,a);r=lerp(90,70,a);s=lerp(.7,.96,a)}else if(t<.58){const a=ease((t-.32)/.26);r=lerp(70,68,a);s=lerp(.96,1.09,a)}else{const a=ease((t-.58)/.42);r=lerp(68,mobile?14:45,a);s=lerp(1.09,1,a)}}
+  if(!mq.matches&&entered){const travel=ease(p);x=mobile?0:travel*6;y=travel*(mobile?5:9)+exit*(mobile?10:16);r=(mobile?14:45)-travel*10;s=1-travel*(mobile?.06:.1)-exit*(mobile?.28:.22)}
+  actor.style.transform=`translate(calc(-50% + ${x.toFixed(3)}vw),calc(-50% + ${y.toFixed(3)}vh)) rotate(${r.toFixed(3)}deg) scale(${s.toFixed(4)})`;actor.style.opacity=mq.matches||entered||entering?'1':'0';
+  word.style.transform=`translate(-50%,${(entering?lerp(-50,-4,ease((t-.58)/.42)):-4).toFixed(2)}%)`;root.style.setProperty('--ui-opacity',ui.toFixed(4));root.style.setProperty('--set-shift',`${-p*24}px`);
+  const departure=ease((p-.72)/.12);copy.style.opacity=lead.style.opacity=String(ui*(1-departure));copy.inert=lead.inert=departure>.9||ui<.95;handoff.style.opacity=String(exit);handoff.inert=exit<.95;controls.inert=ui<.95;
+  root.dataset.progress=p.toFixed(4);root.dataset.sceneState=exit>.8?'handoff':p>.01?'product-cut':entering?'reveal':'hero';root.dataset.entryProgress=t.toFixed(4);if(entering&&visible)schedule();
  }
- window.CinematicProduct={mount};document.querySelectorAll('[data-cinematic]').forEach(mount);
+ const enteredEvent=()=>{if(destroyed)return;measure();if(mq.matches||scrollY>top+5){entered=true;entering=false;root.classList.add('timeline-complete')}else{entered=false;entering=true;start=performance.now();root.classList.remove('timeline-complete')}schedule()};
+ const scroll=()=>{if(Math.abs(scrollY-lastY)>.5){if(!mq.matches)manual=null;lastY=scrollY}if(visible)schedule()},resize=()=>{measure();schedule()},preference=()=>{root.classList.toggle('cinema-reduced',mq.matches);if(mq.matches){entering=false;entered=true;root.classList.add('timeline-complete')}measure();schedule()},select=e=>{const b=e.target.closest('[data-finish-button]');if(!b||!root.contains(b))return;manual=Number(b.dataset.finishButton);lastY=scrollY;entering=false;entered=true;root.classList.add('timeline-complete');paint()},visibility=()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0}else resize()};
+ root.addEventListener('click',select);addEventListener('scroll',scroll,{passive:true});addEventListener('resize',resize,{passive:true});addEventListener('retail:entered',enteredEvent);mq.addEventListener('change',preference);document.addEventListener('visibilitychange',visibility);
+ const observer=new IntersectionObserver(([e])=>{visible=e.isIntersecting;if(visible)resize();else{cancelAnimationFrame(frame);frame=0}},{rootMargin:'100px'});observer.observe(root);
+ measure();preference();if(document.body.classList.contains('entry-ready')){entered=true;root.classList.add('timeline-complete')}paint();
+ Promise.all(layers.map(img=>img.decode())).then(()=>{if(!destroyed)root.classList.add('product-decoded')},()=>{if(!destroyed&&layers[active]?.naturalWidth===0)root.classList.add('product-unavailable')});
+ const api={refresh:resize,destroy(){if(destroyed)return;destroyed=true;cancelAnimationFrame(frame);observer.disconnect();root.removeEventListener('click',select);removeEventListener('scroll',scroll);removeEventListener('resize',resize);removeEventListener('retail:entered',enteredEvent);mq.removeEventListener('change',preference);document.removeEventListener('visibilitychange',visibility);root.classList.remove('cinema-ready','cinema-reduced','timeline-complete','product-decoded','product-unavailable');owned.forEach(({el,style,inert,hidden})=>{if(style===null)el.removeAttribute('style');else el.setAttribute('style',style);el.inert=inert;if(hidden===null)el.removeAttribute('aria-hidden');else el.setAttribute('aria-hidden',hidden)});originalButtons.forEach(({el,disabled,pressed})=>{el.disabled=disabled;if(pressed===null)el.removeAttribute('aria-pressed');else el.setAttribute('aria-pressed',pressed)});originalData.forEach(([k,v])=>{if(v===undefined)delete root.dataset[k];else root.dataset[k]=v});label.textContent=originalLabel;originalDetails.forEach(({el,src})=>el.setAttribute('src',src));delete root.__cinematic}};root.__cinematic=api;return api;
+}
+window.CinematicProduct={mount};document.querySelectorAll('[data-cinematic]').forEach(mount);
 })();
